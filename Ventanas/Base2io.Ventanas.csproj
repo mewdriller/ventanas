@@ -7,8 +7,8 @@
     <ProjectGuid>{7B8548DC-BB8E-49E7-9AB2-067F4CFB892B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ventanas</RootNamespace>
-    <AssemblyName>Ventanas</AssemblyName>
+    <RootNamespace>Base2io.Ventanas</RootNamespace>
+    <AssemblyName>Base2io.Ventanas</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ventanas.App</StartupObject>
+    <StartupObject>Base2io.Ventanas.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>CE78D1C631C8C1C53F20BA80C52EB2A2A51B388E</ManifestCertificateThumbprint>
@@ -105,6 +105,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\Hotkeys.cs" />
+    <Compile Include="Logic\WindowPlacement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -155,6 +157,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

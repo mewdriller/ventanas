@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ventanas", "Ventanas\Ventanas.csproj", "{7B8548DC-BB8E-49E7-9AB2-067F4CFB892B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base2io.Ventanas", "Ventanas\Base2io.Ventanas.csproj", "{7B8548DC-BB8E-49E7-9AB2-067F4CFB892B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E5BCEF3E-3786-4ADC-BEA0-F2562CE019AE}"
 	ProjectSection(SolutionItems) = preProject

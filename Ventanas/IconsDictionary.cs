@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using Hardcodet.Wpf.TaskbarNotification;
 
-namespace Ventanas
+namespace Base2io.Ventanas
 {
     partial class IconsDictionary : ResourceDictionary
     {
         public IconsDictionary() 
         {
-            InitializeComponent();
+            TaskbarIcon icon = new TaskbarIcon();
         }
 
         private void OnExitClicked(object sender, RoutedEventArgs e)

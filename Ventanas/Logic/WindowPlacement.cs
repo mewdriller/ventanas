@@ -17,7 +17,14 @@ namespace Base2io.Ventanas.Logic
         private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int width, int height, uint flags);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private const int SW_MAXIMIZE = 3;
+        private const int SW_MINIMIZE = 6;
+        private const int SW_RESTORE = 9;
 
         private Hotkeys _hotkeys;
 
@@ -42,21 +49,34 @@ namespace Base2io.Ventanas.Logic
 
         public static void PositionActiveWindowByRatio(DockStyle position, float sizePercentage)
         {
-            if (sizePercentage <= 0)
+            // Bound the size in [0, 1].
+            sizePercentage = Math.Max(0, Math.Min(1, sizePercentage));
+
+            // Get the handle for the foreground window.
+            IntPtr handle = GetForegroundWindow();
+
+            // If the intent is to maximize: use the native command.
+            if (sizePercentage == 1)
             {
-                Console.Write("Window's size must be positive.");
+                ShowWindow(handle, SW_MAXIMIZE);
             }
+            // If the intent is to minimize: use the native command.
+            else if (sizePercentage == 0)
+            {
+                ShowWindow(handle, SW_MINIMIZE);
+            }
+            // Otherwise, we're looking to resize the window:
             else
             {
+                // Restore it to snap out of minimized/maximized states.
+                ShowWindow(handle, SW_RESTORE);
+
                 int targetX = 0, targetY = 0, targetWidth = 0, targetHeight = 0;
 
                 // Get the working area of the screen:
                 Rect area = SystemParameters.WorkArea;
                 int fullWidth = (int)area.Width;
                 int fullHeight = (int)area.Height;
-
-                // Get the handle for the foreground window.
-                IntPtr handle = GetForegroundWindow();
 
                 switch (position)
                 {
@@ -88,8 +108,8 @@ namespace Base2io.Ventanas.Logic
                     case DockStyle.None:
                         targetHeight = (int)(fullHeight * sizePercentage);
                         targetWidth = (int)(fullWidth * sizePercentage);
-                        targetX = (fullWidth - targetWidth)/2;
-                        targetY = (fullHeight - targetHeight)/2;
+                        targetX = (fullWidth - targetWidth) / 2;
+                        targetY = (fullHeight - targetHeight) / 2;
                         break;
                 }
 

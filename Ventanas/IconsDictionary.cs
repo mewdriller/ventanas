@@ -13,7 +13,7 @@ namespace Base2io.Ventanas
     {
         public IconsDictionary() 
         {
-            TaskbarIcon icon = new TaskbarIcon();
+            InitializeComponent();
         }
 
         private void OnExitClicked(object sender, RoutedEventArgs e)

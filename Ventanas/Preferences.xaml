@@ -1,0 +1,9 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Logic="clr-namespace:Base2io.Ventanas.Logic" x:Class="Base2io.Ventanas.Preferences"
+        Title="Preferences" Height="300" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <Label Content="Hotkeys" Margin="10" FontWeight="Bold"/>
+        <DataGrid Margin="10" ItemsSource="{Binding Hotkeys}"/>
+    </StackPanel>
+</Window>

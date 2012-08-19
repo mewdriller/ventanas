@@ -26,5 +26,11 @@ namespace Base2io.Ventanas
                 Application.Current.Shutdown();
             }
         }
+
+        private void OnPreferencesClicked(object sender, RoutedEventArgs e)
+        {
+            var preferencesWindow = new Preferences();
+            preferencesWindow.Show();
+        }
     }
 }

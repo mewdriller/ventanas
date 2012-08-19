@@ -9,6 +9,8 @@
                     MenuActivation="All">
         <tb:TaskbarIcon.ContextMenu>
             <ContextMenu>
+                <MenuItem Header="Preferences" Click="OnPreferencesClicked" />
+                <Separator />
                 <MenuItem Header="Exit" Click="OnExitClicked" />
             </ContextMenu>
         </tb:TaskbarIcon.ContextMenu>

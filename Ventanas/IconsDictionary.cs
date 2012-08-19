@@ -29,7 +29,7 @@ namespace Base2io.Ventanas
 
         private void OnPreferencesClicked(object sender, RoutedEventArgs e)
         {
-            var preferencesWindow = new Preferences();
+            Window preferencesWindow = new Preferences();
             preferencesWindow.Show();
         }
     }

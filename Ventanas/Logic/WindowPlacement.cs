@@ -34,7 +34,7 @@ namespace Base2io.Ventanas.Logic
 
         public void RegisterNumberPadHotkeys()
         {
-            _hotkeys = new Hotkeys();
+            _hotkeys = Hotkeys.Instance;
             _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, NumPad1_EventHandler);
             _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, NumPad2_EventHandler);
             _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, NumPad3_EventHandler);

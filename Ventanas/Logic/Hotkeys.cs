@@ -12,9 +12,23 @@ namespace Base2io.Ventanas.Logic
     {
         #region Constructor
 
-        public Hotkeys()
+        private Hotkeys()
         {
             _registeredHotkeys = new List<Hotkey>();
+        }
+
+        private static Hotkeys instance;
+        public static Hotkeys Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Hotkeys();
+                }
+
+                return instance;
+            }
         }
 
         #endregion

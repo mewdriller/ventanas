@@ -20,10 +20,11 @@ namespace Base2io.Ventanas
     public partial class App : System.Windows.Application
     {
         WindowPlacement _windowPlacement;
+        TaskbarIcon _tbi;
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            TaskbarIcon tbi = (TaskbarIcon)FindResource("TrayIcon");
+            _tbi = (TaskbarIcon)FindResource("TrayIcon");
 
             _windowPlacement = new WindowPlacement();
             _windowPlacement.RegisterNumberPadHotkeys();
@@ -37,6 +38,9 @@ namespace Base2io.Ventanas
         {
             _windowPlacement.Dispose();
             _windowPlacement = null;
+
+            _tbi.Dispose();
+            _tbi = null;
 
             base.OnExit(e);
         }

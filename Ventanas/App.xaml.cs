@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Runtime.InteropServices;
-using System.Text;
-using ManagedWinapi;
+﻿using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
 using Base2io.Ventanas.Logic;
-using System.Windows.Forms;
 
 namespace Base2io.Ventanas
 {

@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Logic="clr-namespace:Base2io.Ventanas.Logic" x:Class="Base2io.Ventanas.Preferences"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="Preferences" Height="300" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Preferences" Height="300" Width="500" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

@@ -31,16 +31,16 @@ namespace Base2io.Ventanas.Logic
         public void RegisterNumberPadHotkeys()
         {
             _hotkeys = Hotkeys.Instance;
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, NumPad1_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, NumPad2_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, NumPad3_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad4, NumPad4_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad5, NumPad5_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad6, NumPad6_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad7, NumPad7_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad8, NumPad8_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad9, NumPad9_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad0, NumPad0_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, LeftThird_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, BottomHalf_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, BottomThird_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad4, LeftHalf_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad5, Center_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad6, RightHalf_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad7, LeftTwoThirds_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad8, TopHalf_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad9, RightTwoThirds_EventHandler);
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad0, Fill_EventHandler);
         }
 
         public static void PositionActiveWindowByRatio(DockStyle position, float sizePercentage)
@@ -118,52 +118,52 @@ namespace Base2io.Ventanas.Logic
 
         #region Window Placement Event Handlers
 
-        private void NumPad1_EventHandler(object sender, EventArgs e)
+        private void LeftThird_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)1 / 3);
         }
 
-        private void NumPad2_EventHandler(object sender, EventArgs e)
+        private void BottomHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Bottom, (float)1 / 2);
         }
 
-        private void NumPad3_EventHandler(object sender, EventArgs e)
+        private void BottomThird_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)1 / 3);
         }
 
-        private void NumPad4_EventHandler(object sender, EventArgs e)
+        private void LeftHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)1 / 2);
         }
 
-        private void NumPad5_EventHandler(object sender, EventArgs e)
+        private void Center_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Fill, (float)2 / 3);
         }
 
-        private void NumPad6_EventHandler(object sender, EventArgs e)
+        private void RightHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)1 / 2);
         }
 
-        private void NumPad7_EventHandler(object sender, EventArgs e)
+        private void LeftTwoThirds_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)2 / 3);
         }
 
-        private void NumPad8_EventHandler(object sender, EventArgs e)
+        private void TopHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Top, (float)1 / 2);
         }
 
-        private void NumPad9_EventHandler(object sender, EventArgs e)
+        private void RightTwoThirds_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)2 / 3);
         }
 
-        private void NumPad0_EventHandler(object sender, EventArgs e)
+        private void Fill_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Fill, (float)1);
         }

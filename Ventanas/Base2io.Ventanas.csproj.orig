@@ -68,8 +68,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Icons\Error.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
@@ -144,6 +143,9 @@
     <None Include="Ventanas_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Error.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
@@ -165,9 +167,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+<<<<<<< HEAD
+=======
   <ItemGroup>
     <Resource Include="Icons\window.ico" />
   </ItemGroup>
+>>>>>>> master
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

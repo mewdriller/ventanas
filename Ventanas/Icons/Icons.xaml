@@ -4,7 +4,7 @@
                     x:Class="Base2io.Ventanas.IconsDictionary"
                     x:ClassModifier="public">
     <tb:TaskbarIcon x:Key="TrayIcon"
-                    IconSource="/Icons/Error.ico"
+                    IconSource="/Icons/window.ico"
                     ToolTipText="Ventanas"
                     MenuActivation="All">
         <tb:TaskbarIcon.ContextMenu>

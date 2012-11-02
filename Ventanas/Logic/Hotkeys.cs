@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using ManagedWinapi;
@@ -76,13 +74,13 @@ namespace Base2io.Ventanas.Logic
                     _registeredHotkeys.Add(hotkey);
                     isSuccessful = true;
                 }
-                catch (ManagedWinapi.HotkeyAlreadyInUseException)
+                catch (HotkeyAlreadyInUseException)
                 {
-                    System.Windows.MessageBox.Show("The following hotkey is already in use: " + Hotkeys.HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("The following hotkey is already in use: " + HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch
                 {
-                    System.Windows.MessageBox.Show("Failed to register the following hotkey: " + Hotkeys.HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("Failed to register the following hotkey: " + HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -98,21 +96,6 @@ namespace Base2io.Ventanas.Logic
         public bool RegisterCtrlAltHotkey(Keys keyCode, EventHandler hotkeyHandler)
         {
             return RegisterHotkey(keyCode, hotkeyHandler, true, true);
-        }
-
-        /// <summary>
-        /// Replace the current hotkeys with a new configuration.
-        /// </summary>
-        /// <param name="newHotkeys">The new hotkeys to apply</param>
-        public void UpdateHotkeys(List<Hotkey> newHotkeys)
-        {
-            DisposeRegisteredHotkeys();
-
-            // Register new hotkeys:
-            foreach (Hotkey hotkey in newHotkeys)
-            {
-                // TODO
-            }
         }
 
         #endregion

@@ -38,8 +38,6 @@ namespace Base2io.Ventanas
 
         #endregion
 
-        
-
         #region Event Handlers
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
@@ -49,8 +47,7 @@ namespace Base2io.Ventanas
         
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            // Apply new hotkeys.
-            Hotkeys.Instance.UpdateHotkeys(CustomizedHotkeys);
+            // TODO: Apply new hotkeys.
         }
 
         #endregion

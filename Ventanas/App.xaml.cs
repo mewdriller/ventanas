@@ -16,7 +16,7 @@ namespace Base2io.Ventanas
         {
             _tbi = (TaskbarIcon)FindResource("TrayIcon");
 
-            _windowPlacement = new WindowPlacement();
+            _windowPlacement = WindowPlacement.Instance;
             _windowPlacement.RegisterHotkeys();
 
             base.OnStartup(e);

@@ -120,6 +120,7 @@
   <ItemGroup>
     <Compile Include="Logic\Hotkeys.cs" />
     <Compile Include="Logic\WindowPlacement.cs" />
+    <Compile Include="Model\PositionHotKey.cs" />
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>

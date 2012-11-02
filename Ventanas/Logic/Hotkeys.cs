@@ -17,18 +17,10 @@ namespace Base2io.Ventanas.Logic
             _registeredHotkeys = new List<Hotkey>();
         }
 
-        private static Hotkeys instance;
+        private static Hotkeys _instance;
         public static Hotkeys Instance
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Hotkeys();
-                }
-
-                return instance;
-            }
+            get { return _instance ?? (_instance = new Hotkeys()); }
         }
 
         #endregion
@@ -49,9 +41,9 @@ namespace Base2io.Ventanas.Logic
         {
             return (hotkey.Ctrl ? "ctrl+" : "")
                         + (hotkey.Alt ? "alt+" : "")
-                        + (hotkey.Shift? "shift+" : "")
+                        + (hotkey.Shift ? "shift+" : "")
                         + (hotkey.WindowsKey ? "win+" : "")
-                        + hotkey.KeyCode.ToString();
+                        + hotkey.KeyCode;
         }
 
         /// <summary>
@@ -76,7 +68,7 @@ namespace Base2io.Ventanas.Logic
                 hotkey.Alt = isAltKeyUsed;
                 hotkey.Shift = isShiftKeyUsed;
                 hotkey.WindowsKey = isWinKeyUsed;
-                hotkey.HotkeyPressed += hotkeyHandler;
+                hotkey.HotkeyPressed += hotkeyHandler;                
 
                 try
                 {
@@ -105,7 +97,22 @@ namespace Base2io.Ventanas.Logic
         /// <returns>True if the hotkey registration succeeds</returns>
         public bool RegisterCtrlAltHotkey(Keys keyCode, EventHandler hotkeyHandler)
         {
-            return this.RegisterHotkey(keyCode, hotkeyHandler, true, true);
+            return RegisterHotkey(keyCode, hotkeyHandler, true, true);
+        }
+
+        /// <summary>
+        /// Replace the current hotkeys with a new configuration.
+        /// </summary>
+        /// <param name="newHotkeys">The new hotkeys to apply</param>
+        public void UpdateHotkeys(List<Hotkey> newHotkeys)
+        {
+            DisposeRegisteredHotkeys();
+
+            // Register new hotkeys:
+            foreach (Hotkey hotkey in newHotkeys)
+            {
+                // TODO
+            }
         }
 
         #endregion
@@ -127,17 +134,22 @@ namespace Base2io.Ventanas.Logic
             {
                 if (disposing)
                 {
-                    if (_registeredHotkeys != null)
-                    {
-                        foreach (Hotkey hotkey in _registeredHotkeys)
-                        {
-                            hotkey.Dispose();
-                        }
-                    }
+                    DisposeRegisteredHotkeys();
                 }
 
                 _registeredHotkeys = null;
                 _disposed = true;
+            }
+        }
+
+        private void DisposeRegisteredHotkeys()
+        {
+            if (_registeredHotkeys != null)
+            {
+                foreach (Hotkey hotkey in _registeredHotkeys)
+                {
+                    hotkey.Dispose();
+                }
             }
         }
 

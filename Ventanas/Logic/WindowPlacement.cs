@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
+using Base2io.Ventanas.Enums;
 
 namespace Base2io.Ventanas.Logic
 {
@@ -28,19 +29,10 @@ namespace Base2io.Ventanas.Logic
 
         #region Public Logic
 
-        public void RegisterNumberPadHotkeys()
+        public void RegisterHotkeys()
         {
             _hotkeys = Hotkeys.Instance;
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, LeftThird_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, BottomHalf_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, BottomThird_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad4, LeftHalf_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad5, Center_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad6, RightHalf_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad7, LeftTwoThirds_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad8, TopHalf_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad9, RightTwoThirds_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad0, Fill_EventHandler);
+            SetHotkeys();
         }
 
         public static void PositionActiveWindowByRatio(DockStyle position, float sizePercentage)
@@ -52,12 +44,12 @@ namespace Base2io.Ventanas.Logic
             IntPtr handle = GetForegroundWindow();
 
             // If the intent is to maximize: use the native command.
-            if (sizePercentage == 1)
+            if (Math.Abs(sizePercentage - 1) < float.Epsilon)
             {
                 ShowWindow(handle, SW_MAXIMIZE);
             }
             // If the intent is to minimize: use the native command.
-            else if (sizePercentage == 0)
+            else if (Math.Abs(sizePercentage - 0) < float.Epsilon)
             {
                 ShowWindow(handle, SW_MINIMIZE);
             }
@@ -116,6 +108,62 @@ namespace Base2io.Ventanas.Logic
 
         #endregion
 
+        #region Private Logic
+
+        private void SetHotkeys()
+        {
+            // TODO: Set based on stored user preferences.
+            
+            ApplyDefaultHotkeys();
+        }
+
+        private void ApplyDefaultHotkeys()
+        {
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, GetWindowPositionEventHandler(WindowPosition.LeftOneThird));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, GetWindowPositionEventHandler(WindowPosition.BottomHalf));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, GetWindowPositionEventHandler(WindowPosition.RightOneThird));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad4, GetWindowPositionEventHandler(WindowPosition.LeftHalf));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad5, GetWindowPositionEventHandler(WindowPosition.Center));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad6, GetWindowPositionEventHandler(WindowPosition.RightHalf));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad7, GetWindowPositionEventHandler(WindowPosition.LeftTwoThirds));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad8, GetWindowPositionEventHandler(WindowPosition.TopHalf));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad9, GetWindowPositionEventHandler(WindowPosition.RightTwoThirds));
+            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad0, GetWindowPositionEventHandler(WindowPosition.Fill));
+        }
+
+        private EventHandler GetWindowPositionEventHandler(WindowPosition position)
+        {
+            switch (position)
+            {
+                case WindowPosition.LeftOneThird:
+                    return LeftThird_EventHandler;
+                case WindowPosition.LeftHalf:
+                    return LeftHalf_EventHandler;
+                case WindowPosition.LeftTwoThirds:
+                    return LeftTwoThirds_EventHandler;
+
+                case WindowPosition.RightOneThird:
+                    return RightThird_EventHandler;
+                case WindowPosition.RightHalf:
+                    return RightHalf_EventHandler;
+                case WindowPosition.RightTwoThirds:
+                    return RightTwoThirds_EventHandler;
+
+                case WindowPosition.TopHalf:
+                    return TopHalf_EventHandler;
+                case WindowPosition.BottomHalf:
+                    return BottomHalf_EventHandler;
+
+                case WindowPosition.Center:
+                    return Center_EventHandler;
+                case WindowPosition.Fill:
+                    return Fill_EventHandler;
+
+                default:
+                    return Fill_EventHandler;
+            }
+        }
+
         #region Window Placement Event Handlers
 
         private void LeftThird_EventHandler(object sender, EventArgs e)
@@ -128,7 +176,7 @@ namespace Base2io.Ventanas.Logic
             PositionActiveWindowByRatio(DockStyle.Bottom, (float)1 / 2);
         }
 
-        private void BottomThird_EventHandler(object sender, EventArgs e)
+        private void RightThird_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)1 / 3);
         }
@@ -165,8 +213,10 @@ namespace Base2io.Ventanas.Logic
 
         private void Fill_EventHandler(object sender, EventArgs e)
         {
-            PositionActiveWindowByRatio(DockStyle.Fill, (float)1);
+            PositionActiveWindowByRatio(DockStyle.Fill, 1);
         }
+
+        #endregion 
 
         #endregion
         

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -20,17 +22,37 @@ namespace Base2io.Ventanas
     /// </summary>
     public partial class Preferences : Window
     {
+        #region Constructor
+
         public Preferences()
         {
+            CustomizedHotkeys = new List<Hotkey>(Hotkeys.Instance.RegisteredHotkeys);
             InitializeComponent();
+        } 
+
+        #endregion
+
+        #region Properties
+
+        public List<Hotkey> CustomizedHotkeys { get; set; }
+
+        #endregion
+
+        
+
+        #region Event Handlers
+
+        private void CancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            // Apply new hotkeys.
+            Hotkeys.Instance.UpdateHotkeys(CustomizedHotkeys);
         }
 
-        public List<Hotkey> RegisteredHotkeys
-        {
-            get
-            {
-                return Hotkeys.Instance.RegisteredHotkeys;
-            }
-        }
+        #endregion
     }
 }

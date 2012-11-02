@@ -2,13 +2,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Logic="clr-namespace:Base2io.Ventanas.Logic" x:Class="Base2io.Ventanas.Preferences"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="Preferences" Height="300" Width="500" WindowStartupLocation="CenterScreen">
-    <Grid>
+        Title="Preferences" Height="400" Width="450" WindowStartupLocation="CenterScreen"
+        >
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="Hotkeys" Margin="10" FontWeight="Bold"/>
-        <DataGrid Margin="10" ItemsSource="{Binding RegisteredHotkeys}" Grid.Row="1"/>
+        
+        <Label Content="Hotkeys" FontWeight="Bold" Margin="0, 0, 0, 10"/>
+        
+        <DataGrid ItemsSource="{Binding CustomizedHotkeys}" Grid.Row="1"  Margin="0, 0, 0, 10"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2">
+            <Button Name="SaveButton" Content="Save" Margin="0, 0, 10, 0" Click="SaveButtonClick" />
+            <Button Name="CancelButton" Content="Cancel" Click="CancelButtonClick" />
+        </StackPanel>
     </Grid>
 </Window>

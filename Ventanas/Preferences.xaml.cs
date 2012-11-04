@@ -35,7 +35,7 @@ namespace Base2io.Ventanas
         
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            WindowPlacement.Instance.RegisterHotKeys(CustomizedHotkeys);
+            WindowPlacement.Instance.RegisterHotkeys(CustomizedHotkeys);
             Close();
         }
 

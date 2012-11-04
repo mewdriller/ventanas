@@ -7,6 +7,7 @@ using Base2io.Ventanas.Enums;
 
 namespace Base2io.Ventanas.Model
 {
+    [Serializable]
     public class PositionHotkey
     {
         public WindowPosition WindowPosition { get; set; }

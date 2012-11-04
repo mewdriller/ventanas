@@ -54,8 +54,12 @@ namespace Base2io.Ventanas.Logic
             RegisterPositionHotkeys(PositionHotkeys);
         }
 
-        public void RegisterHotKeys(IEnumerable<PositionHotkey> hotkeys)
+        public void RegisterHotkeys(IEnumerable<PositionHotkey> hotkeys)
         {
+            Properties.Settings.Default.CustomHotkeys = hotkeys;
+            Properties.Settings.Default.Save();
+
+
             _hotkeyService.ClearRegisteredHotkeys();
             PositionHotkeys = hotkeys;
             RegisterPositionHotkeys(hotkeys);

@@ -22,5 +22,16 @@ namespace Base2io.Ventanas.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Generic.IEnumerable<Base2io.Ventanas.Model.PositionHotkey> CustomHotkeys {
+            get {
+                return ((global::System.Collections.Generic.IEnumerable<Base2io.Ventanas.Model.PositionHotkey>)(this["CustomHotkeys"]));
+            }
+            set {
+                this["CustomHotkeys"] = value;
+            }
+        }
     }
 }

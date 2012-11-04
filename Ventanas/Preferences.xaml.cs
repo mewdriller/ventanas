@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Base2io.Ventanas.Logic;
-using ManagedWinapi;
+using Base2io.Ventanas.Model;
 
 namespace Base2io.Ventanas
 {
@@ -26,7 +14,7 @@ namespace Base2io.Ventanas
 
         public Preferences()
         {
-            CustomizedHotkeys = new List<Hotkey>(Hotkeys.Instance.RegisteredHotkeys);
+            CustomizedHotkeys = new List<PositionHotkey>(WindowPlacement.Instance.PositionHotkeys);
             InitializeComponent();
         } 
 
@@ -34,7 +22,7 @@ namespace Base2io.Ventanas
 
         #region Properties
 
-        public List<Hotkey> CustomizedHotkeys { get; set; }
+        public List<PositionHotkey> CustomizedHotkeys { get; set; }
 
         #endregion
 
@@ -42,12 +30,13 @@ namespace Base2io.Ventanas
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
         
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            // TODO: Apply new hotkeys.
+            WindowPlacement.Instance.RegisterHotKeys(CustomizedHotkeys);
+            Close();
         }
 
         #endregion

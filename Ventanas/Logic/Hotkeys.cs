@@ -98,6 +98,12 @@ namespace Base2io.Ventanas.Logic
             return RegisterHotkey(keyCode, hotkeyHandler, true, true);
         }
 
+        public void ClearRegisteredHotkeys()
+        {
+            DisposeRegisteredHotkeys();
+            _registeredHotkeys = new List<Hotkey>();
+        }
+
         #endregion
         
         #region IDisposable Implementation

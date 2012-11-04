@@ -29,6 +29,8 @@ namespace Base2io.Ventanas.Logic
 
         #endregion
 
+        public IEnumerable<PositionHotkey> PositionHotkeys { get; set; }
+
         #region Constructors
 
         private WindowPlacement()
@@ -48,7 +50,15 @@ namespace Base2io.Ventanas.Logic
         public void RegisterHotkeys()
         {
             _hotkeyService = Hotkeys.Instance;
-            SetHotkeys();
+            PositionHotkeys = GetHotkeySettings();
+            RegisterPositionHotkeys(PositionHotkeys);
+        }
+
+        public void RegisterHotKeys(IEnumerable<PositionHotkey> hotkeys)
+        {
+            _hotkeyService.ClearRegisteredHotkeys();
+            PositionHotkeys = hotkeys;
+            RegisterPositionHotkeys(hotkeys);
         }
 
         public static void PositionActiveWindowByRatio(DockStyle position, float sizePercentage)
@@ -126,91 +136,81 @@ namespace Base2io.Ventanas.Logic
 
         #region Private Logic
 
-        private void SetHotkeys()
+        private IEnumerable<PositionHotkey> GetHotkeySettings()
         {
             // TODO: Set based on stored user preferences.
             
-            IEnumerable<PositionHotKey> hotKeys = GetDefaultHotKeys();
-
-            foreach (PositionHotKey hotKey in hotKeys)
-            {
-                _hotkeyService.RegisterHotkey(hotKey.KeyCode,
-                                              GetWindowPositionEventHandler(hotKey.WindowPosition),
-                                              hotKey.IsCtrlKeyUsed,
-                                              hotKey.IsAltKeyUsed,
-                                              hotKey.IsShiftKeyUsed,
-                                              hotKey.IsWinKeyUsed);
-            }
+            return GetDefaultHotkeys();
         }
 
-        private IEnumerable<PositionHotKey> GetDefaultHotKeys()
+        private IEnumerable<PositionHotkey> GetDefaultHotkeys()
         {
-            return new List<PositionHotKey>
+            return new List<PositionHotkey>
                        {
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.LeftOneThird,
                                    KeyCode = Keys.NumPad1,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.LeftHalf,
                                    KeyCode = Keys.NumPad4,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.LeftTwoThirds,
                                    KeyCode = Keys.NumPad7,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.RightOneThird,
                                    KeyCode = Keys.NumPad3,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.RightHalf,
                                    KeyCode = Keys.NumPad6,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.RightTwoThirds,
                                    KeyCode = Keys.NumPad9,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.TopHalf,
                                    KeyCode = Keys.NumPad8,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.BottomHalf,
                                    KeyCode = Keys.NumPad2,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.Center,
                                    KeyCode = Keys.NumPad5,
                                    IsCtrlKeyUsed = true,
                                    IsAltKeyUsed = true
                                },
-                           new PositionHotKey
+                           new PositionHotkey
                                {
                                    WindowPosition = WindowPosition.Fill,
                                    KeyCode = Keys.NumPad0,
@@ -251,6 +251,20 @@ namespace Base2io.Ventanas.Logic
                 default:
                     return Fill_EventHandler;
             }
+        }
+
+        private void RegisterPositionHotkeys(IEnumerable<PositionHotkey> hotkeys)
+        {
+
+            foreach (PositionHotkey hotkey in hotkeys)
+            {
+                _hotkeyService.RegisterHotkey(hotkey.KeyCode,
+                                              GetWindowPositionEventHandler(hotkey.WindowPosition),
+                                              hotkey.IsCtrlKeyUsed,
+                                              hotkey.IsAltKeyUsed,
+                                              hotkey.IsShiftKeyUsed,
+                                              hotkey.IsWinKeyUsed);
+            } 
         }
 
         #region Window Placement Event Handlers

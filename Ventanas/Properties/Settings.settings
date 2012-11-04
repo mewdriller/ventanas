@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Base2io.Ventanas.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="CustomHotkeys" Type="System.Collections.Generic.IEnumerable`1[Base2io.Ventanas.Model.PositionHotkey]" Scope="User">
+    <Setting Name="CustomHotkeys" Type="System.Collections.Generic.List`1[Base2io.Ventanas.Model.PositionHotkey]" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

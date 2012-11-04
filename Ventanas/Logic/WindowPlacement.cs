@@ -29,7 +29,7 @@ namespace Base2io.Ventanas.Logic
 
         #endregion
 
-        public IEnumerable<PositionHotkey> PositionHotkeys { get; set; }
+        public List<PositionHotkey> PositionHotkeys { get; set; }
 
         #region Constructors
 
@@ -54,12 +54,13 @@ namespace Base2io.Ventanas.Logic
             RegisterPositionHotkeys(PositionHotkeys);
         }
 
-        public void RegisterHotkeys(IEnumerable<PositionHotkey> hotkeys)
+        public void RegisterHotkeys(List<PositionHotkey> hotkeys)
         {
+            // Save settings:
             Properties.Settings.Default.CustomHotkeys = hotkeys;
             Properties.Settings.Default.Save();
 
-
+            // Clear and re-register hotkeys:
             _hotkeyService.ClearRegisteredHotkeys();
             PositionHotkeys = hotkeys;
             RegisterPositionHotkeys(hotkeys);
@@ -140,14 +141,12 @@ namespace Base2io.Ventanas.Logic
 
         #region Private Logic
 
-        private IEnumerable<PositionHotkey> GetHotkeySettings()
+        private List<PositionHotkey> GetHotkeySettings()
         {
-            // TODO: Set based on stored user preferences.
-            
-            return GetDefaultHotkeys();
+            return Properties.Settings.Default.CustomHotkeys ?? GetDefaultHotkeys();
         }
 
-        private IEnumerable<PositionHotkey> GetDefaultHotkeys()
+        private List<PositionHotkey> GetDefaultHotkeys()
         {
             return new List<PositionHotkey>
                        {
@@ -257,7 +256,7 @@ namespace Base2io.Ventanas.Logic
             }
         }
 
-        private void RegisterPositionHotkeys(IEnumerable<PositionHotkey> hotkeys)
+        private void RegisterPositionHotkeys(List<PositionHotkey> hotkeys)
         {
 
             foreach (PositionHotkey hotkey in hotkeys)

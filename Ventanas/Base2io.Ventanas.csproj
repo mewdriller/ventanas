@@ -68,7 +68,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icons\Error.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
@@ -134,9 +135,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Ventanas_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Error.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

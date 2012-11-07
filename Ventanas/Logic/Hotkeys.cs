@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using ManagedWinapi;
@@ -12,9 +10,15 @@ namespace Base2io.Ventanas.Logic
     {
         #region Constructor
 
-        public Hotkeys()
+        private Hotkeys()
         {
             _registeredHotkeys = new List<Hotkey>();
+        }
+
+        private static Hotkeys _instance;
+        public static Hotkeys Instance
+        {
+            get { return _instance ?? (_instance = new Hotkeys()); }
         }
 
         #endregion
@@ -35,9 +39,9 @@ namespace Base2io.Ventanas.Logic
         {
             return (hotkey.Ctrl ? "ctrl+" : "")
                         + (hotkey.Alt ? "alt+" : "")
-                        + (hotkey.Shift? "shift+" : "")
+                        + (hotkey.Shift ? "shift+" : "")
                         + (hotkey.WindowsKey ? "win+" : "")
-                        + hotkey.KeyCode.ToString();
+                        + hotkey.KeyCode;
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace Base2io.Ventanas.Logic
                 hotkey.Alt = isAltKeyUsed;
                 hotkey.Shift = isShiftKeyUsed;
                 hotkey.WindowsKey = isWinKeyUsed;
-                hotkey.HotkeyPressed += hotkeyHandler;
+                hotkey.HotkeyPressed += hotkeyHandler;                
 
                 try
                 {
@@ -70,13 +74,13 @@ namespace Base2io.Ventanas.Logic
                     _registeredHotkeys.Add(hotkey);
                     isSuccessful = true;
                 }
-                catch (ManagedWinapi.HotkeyAlreadyInUseException)
+                catch (HotkeyAlreadyInUseException)
                 {
-                    System.Windows.MessageBox.Show("The following hotkey is already in use: " + Hotkeys.HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("The following hotkey is already in use: " + HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch
                 {
-                    System.Windows.MessageBox.Show("Failed to register the following hotkey: " + Hotkeys.HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("Failed to register the following hotkey: " + HotkeyName(hotkey), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -91,7 +95,13 @@ namespace Base2io.Ventanas.Logic
         /// <returns>True if the hotkey registration succeeds</returns>
         public bool RegisterCtrlAltHotkey(Keys keyCode, EventHandler hotkeyHandler)
         {
-            return this.RegisterHotkey(keyCode, hotkeyHandler, true, true);
+            return RegisterHotkey(keyCode, hotkeyHandler, true, true);
+        }
+
+        public void ClearRegisteredHotkeys()
+        {
+            DisposeRegisteredHotkeys();
+            _registeredHotkeys = new List<Hotkey>();
         }
 
         #endregion
@@ -113,17 +123,22 @@ namespace Base2io.Ventanas.Logic
             {
                 if (disposing)
                 {
-                    if (_registeredHotkeys != null)
-                    {
-                        foreach (Hotkey hotkey in _registeredHotkeys)
-                        {
-                            hotkey.Dispose();
-                        }
-                    }
+                    DisposeRegisteredHotkeys();
                 }
 
                 _registeredHotkeys = null;
                 _disposed = true;
+            }
+        }
+
+        private void DisposeRegisteredHotkeys()
+        {
+            if (_registeredHotkeys != null)
+            {
+                foreach (Hotkey hotkey in _registeredHotkeys)
+                {
+                    hotkey.Dispose();
+                }
             }
         }
 

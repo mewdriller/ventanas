@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Base2io.Ventanas
 {
@@ -25,6 +19,12 @@ namespace Base2io.Ventanas
                 // Shutdown the application.
                 Application.Current.Shutdown();
             }
+        }
+
+        private void OnPreferencesClicked(object sender, RoutedEventArgs e)
+        {
+            Window preferencesWindow = new Preferences();
+            preferencesWindow.Show();
         }
     }
 }

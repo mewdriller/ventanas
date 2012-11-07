@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
-using ManagedWinapi;
+using Base2io.Ventanas.Enums;
+using Base2io.Ventanas.Model;
 
 namespace Base2io.Ventanas.Logic
 {
@@ -26,25 +25,45 @@ namespace Base2io.Ventanas.Logic
         private const int SW_MINIMIZE = 6;
         private const int SW_RESTORE = 9;
 
-        private Hotkeys _hotkeys;
+        private Hotkeys _hotkeyService;
+
+        #endregion
+
+        public List<PositionHotkey> PositionHotkeys { get; set; }
+
+        #region Constructors
+
+        private WindowPlacement()
+        {
+        }
+
+        private static WindowPlacement _instance;
+        public static WindowPlacement Instance
+        {
+            get { return _instance ?? (_instance = new WindowPlacement()); }
+        }
 
         #endregion
 
         #region Public Logic
 
-        public void RegisterNumberPadHotkeys()
+        public void RegisterHotkeys()
         {
-            _hotkeys = new Hotkeys();
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad1, NumPad1_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad2, NumPad2_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad3, NumPad3_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad4, NumPad4_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad5, NumPad5_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad6, NumPad6_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad7, NumPad7_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad8, NumPad8_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad9, NumPad9_EventHandler);
-            _hotkeys.RegisterCtrlAltHotkey(Keys.NumPad0, NumPad0_EventHandler);
+            _hotkeyService = Hotkeys.Instance;
+            PositionHotkeys = GetHotkeySettings();
+            RegisterPositionHotkeys(PositionHotkeys);
+        }
+
+        public void RegisterHotkeys(List<PositionHotkey> hotkeys)
+        {
+            // Save settings:
+            Properties.Settings.Default.CustomHotkeys = hotkeys;
+            Properties.Settings.Default.Save();
+
+            // Clear and re-register hotkeys:
+            _hotkeyService.ClearRegisteredHotkeys();
+            PositionHotkeys = hotkeys;
+            RegisterPositionHotkeys(hotkeys);
         }
 
         public static void PositionActiveWindowByRatio(DockStyle position, float sizePercentage)
@@ -56,12 +75,12 @@ namespace Base2io.Ventanas.Logic
             IntPtr handle = GetForegroundWindow();
 
             // If the intent is to maximize: use the native command.
-            if (sizePercentage == 1)
+            if (Math.Abs(sizePercentage - 1) < float.Epsilon)
             {
                 ShowWindow(handle, SW_MAXIMIZE);
             }
             // If the intent is to minimize: use the native command.
-            else if (sizePercentage == 0)
+            else if (Math.Abs(sizePercentage - 0) < float.Epsilon)
             {
                 ShowWindow(handle, SW_MINIMIZE);
             }
@@ -120,57 +139,190 @@ namespace Base2io.Ventanas.Logic
 
         #endregion
 
+        #region Private Logic
+
+        private List<PositionHotkey> GetHotkeySettings()
+        {
+            return Properties.Settings.Default.CustomHotkeys ?? GetDefaultHotkeys();
+        }
+
+        private List<PositionHotkey> GetDefaultHotkeys()
+        {
+            return new List<PositionHotkey>
+                       {
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.LeftOneThird,
+                                   KeyCode = Keys.NumPad1,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.LeftHalf,
+                                   KeyCode = Keys.NumPad4,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.LeftTwoThirds,
+                                   KeyCode = Keys.NumPad7,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.RightOneThird,
+                                   KeyCode = Keys.NumPad3,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.RightHalf,
+                                   KeyCode = Keys.NumPad6,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.RightTwoThirds,
+                                   KeyCode = Keys.NumPad9,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.TopHalf,
+                                   KeyCode = Keys.NumPad8,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.BottomHalf,
+                                   KeyCode = Keys.NumPad2,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.Center,
+                                   KeyCode = Keys.NumPad5,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               },
+                           new PositionHotkey
+                               {
+                                   WindowPosition = WindowPosition.Fill,
+                                   KeyCode = Keys.NumPad0,
+                                   IsCtrlKeyUsed = true,
+                                   IsAltKeyUsed = true
+                               }
+                       };
+        }
+
+        private EventHandler GetWindowPositionEventHandler(WindowPosition position)
+        {
+            switch (position)
+            {
+                case WindowPosition.LeftOneThird:
+                    return LeftThird_EventHandler;
+                case WindowPosition.LeftHalf:
+                    return LeftHalf_EventHandler;
+                case WindowPosition.LeftTwoThirds:
+                    return LeftTwoThirds_EventHandler;
+
+                case WindowPosition.RightOneThird:
+                    return RightThird_EventHandler;
+                case WindowPosition.RightHalf:
+                    return RightHalf_EventHandler;
+                case WindowPosition.RightTwoThirds:
+                    return RightTwoThirds_EventHandler;
+
+                case WindowPosition.TopHalf:
+                    return TopHalf_EventHandler;
+                case WindowPosition.BottomHalf:
+                    return BottomHalf_EventHandler;
+
+                case WindowPosition.Center:
+                    return Center_EventHandler;
+                case WindowPosition.Fill:
+                    return Fill_EventHandler;
+
+                default:
+                    return Fill_EventHandler;
+            }
+        }
+
+        private void RegisterPositionHotkeys(List<PositionHotkey> hotkeys)
+        {
+
+            foreach (PositionHotkey hotkey in hotkeys)
+            {
+                _hotkeyService.RegisterHotkey(hotkey.KeyCode,
+                                              GetWindowPositionEventHandler(hotkey.WindowPosition),
+                                              hotkey.IsCtrlKeyUsed,
+                                              hotkey.IsAltKeyUsed,
+                                              hotkey.IsShiftKeyUsed,
+                                              hotkey.IsWinKeyUsed);
+            } 
+        }
+
         #region Window Placement Event Handlers
 
-        private void NumPad1_EventHandler(object sender, EventArgs e)
+        private void LeftThird_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)1 / 3);
         }
 
-        private void NumPad2_EventHandler(object sender, EventArgs e)
+        private void BottomHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Bottom, (float)1 / 2);
         }
 
-        private void NumPad3_EventHandler(object sender, EventArgs e)
+        private void RightThird_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)1 / 3);
         }
 
-        private void NumPad4_EventHandler(object sender, EventArgs e)
+        private void LeftHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)1 / 2);
         }
 
-        private void NumPad5_EventHandler(object sender, EventArgs e)
+        private void Center_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Fill, (float)2 / 3);
         }
 
-        private void NumPad6_EventHandler(object sender, EventArgs e)
+        private void RightHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)1 / 2);
         }
 
-        private void NumPad7_EventHandler(object sender, EventArgs e)
+        private void LeftTwoThirds_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Left, (float)2 / 3);
         }
 
-        private void NumPad8_EventHandler(object sender, EventArgs e)
+        private void TopHalf_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Top, (float)1 / 2);
         }
 
-        private void NumPad9_EventHandler(object sender, EventArgs e)
+        private void RightTwoThirds_EventHandler(object sender, EventArgs e)
         {
             PositionActiveWindowByRatio(DockStyle.Right, (float)2 / 3);
         }
 
-        private void NumPad0_EventHandler(object sender, EventArgs e)
+        private void Fill_EventHandler(object sender, EventArgs e)
         {
-            PositionActiveWindowByRatio(DockStyle.Fill, (float)1);
+            PositionActiveWindowByRatio(DockStyle.Fill, 1);
         }
+
+        #endregion 
 
         #endregion
         
@@ -191,13 +343,13 @@ namespace Base2io.Ventanas.Logic
             {
                 if (disposing)
                 {
-                    if (_hotkeys != null)
+                    if (_hotkeyService != null)
                     {
-                        _hotkeys.Dispose();
+                        _hotkeyService.Dispose();
                     }
                 }
 
-                _hotkeys = null;
+                _hotkeyService = null;
                 _disposed = true;
             }
         }

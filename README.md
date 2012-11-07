@@ -1,3 +1,3 @@
 # Ventanas
 
-A simple window manager for Windows 7 built in WPF.
+A simple window manager for Windows built in WPF.
